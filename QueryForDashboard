@@ -1,33 +1,16 @@
--- Sql Queries For Tableau
+-- Sql Queries For Tableau Each Query Will be a part of a sheet in tableau to be in the dashboard
+
+-- Data Exploration 
 
 --SELECT * FROM [Portofolio Project]..CovidDeaths$
 
---1
-SELECT SUM(cast(new_deaths as int))as total_deaths,sum(new_cases) as total_cases,
-(SUM(cast(new_deaths as int))/sum(new_cases) ) *100 as death_percentage
- FROM [Portofolio Project]..CovidDeaths$
- -- to take only only the countires not the continent
- WHERE continent is not null
- 
 -- Death percentage
 --SELECT Location , date , total_cases,total_deaths,(total_deaths/total_cases) * 100 as death_percentage
 --  FROM [Portofolio Project]..CovidDeaths$
 --  WHERE location = "Egypt"
 --  order by 1,2
 
---4
- SELECT Location , date , population,MAX(total_cases) total_cases,(MAX(total_cases)/population) * 100 as Infected_percentage
-  FROM [Portofolio Project]..CovidDeaths$
-  GROUP BY Location,date,population
-  order by 5 desc
-
- --3
-  SELECT Location ,  population,MAX(total_cases)as total_cases , MAX((total_cases/population) * 100 )as Infected_percentage
-  FROM [Portofolio Project]..CovidDeaths$
-  GROUP BY Location ,  population
-  ORDER BY 4 desc
-
-    -- Country that has the most deaths
+  -- Country that has the most deaths
   --SELECT Location ,  population,MAX(cast(total_deaths as int))as total_death , MAX(total_deaths)/MAX(total_cases) * 100 as death_percentage
   --FROM [Portofolio Project]..CovidDeaths$
   --WHERE continent is not null
@@ -41,12 +24,7 @@ SELECT SUM(cast(new_deaths as int))as total_deaths,sum(new_cases) as total_cases
   --GROUP BY location
   --ORDER BY 2 desc
 
-  -- 2
-   SELECT continent,SUM(cast(new_deaths as int)) as total_deaths 
-  FROM [Portofolio Project]..CovidDeaths$
-  WHERE continent is  not null
-  GROUP BY continent
-  ORDER BY 2 desc
+
 
   -- Global numbers by date 
   --SELECT date ,SUM(new_cases) as new_cases ,SUM(cast(new_deaths as int)) as new_deaths
@@ -56,7 +34,8 @@ SELECT SUM(cast(new_deaths as int))as total_deaths,sum(new_cases) as total_cases
   --ORDER BY 1
 
 
-  -- Excel vaccines
+
+-- Excel vaccines
 
   -- Looking total population vs Vaccinations
   -- we could make with total vacination but we used partition to use only the new_vaccinated col
@@ -80,11 +59,38 @@ SELECT SUM(cast(new_deaths as int))as total_deaths,sum(new_cases) as total_cases
 --GROUP BY Continent, location, population
 
 
+--1
+SELECT SUM(cast(new_deaths as int))as total_deaths,sum(new_cases) as total_cases,
+(SUM(cast(new_deaths as int))/sum(new_cases) ) *100 as death_percentage
+ FROM [Portofolio Project]..CovidDeaths$
+ -- to take only only the countires not the continent
+ WHERE continent is not null
+
+  -- 2
+   SELECT continent,SUM(cast(new_deaths as int)) as total_deaths 
+  FROM [Portofolio Project]..CovidDeaths$
+  WHERE continent is  not null
+  GROUP BY continent
+  ORDER BY 2 desc
+
+ 
+ --3
+  SELECT Location ,  population,MAX(total_cases)as total_cases , MAX((total_cases/population) * 100 )as Infected_percentage
+  FROM [Portofolio Project]..CovidDeaths$
+  GROUP BY Location ,  population
+  ORDER BY 4 desc
+
+  
+
+--4
+ SELECT Location , date , population,MAX(total_cases) total_cases,(MAX(total_cases)/population) * 100 as Infected_percentage
+  FROM [Portofolio Project]..CovidDeaths$
+  GROUP BY Location,date,population
+  order by 5 desc
+
+ 
+
+ 
 
 
 
-
-
-  -- next we want to use the max count_vaccinated number of a population (until 30-4-21) compare to it
-  --  we want to use the last value of the count_vaccinated for each location and divided by population
-  -- we will create a cte or a temp table
